@@ -8,7 +8,7 @@ camdata = dict()
 
 def reader():
 	while True:
-		cmd = 'raspistill -t 100 -w 100 -h 100 -o img.jpg'
+		cmd = 'raspistill -t 100 -w 100 -h 100 -o img.jpg' #wabout -t
 		with open('img.jpg') as f:
 			camdata['station'] = f.read()
 			
