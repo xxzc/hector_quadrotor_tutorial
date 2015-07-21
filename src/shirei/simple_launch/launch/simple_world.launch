@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<launch>
+  <!-- Start Gazebo with wg world running in (max) realtime -->
+  <include file="$(find hector_gazebo_worlds)/launch/start.launch">
+   <arg name="world" value="$(find simple_launch)/worlds/simple.world"/> 
+  </include>
+  <arg name="station_model" default="$(find simple_launch)/urdf/station.gazebo.xacro"/>
+  <param name="station_description" command="$(find xacro)/xacro.py '$(arg station_model)' " />
+  <node name="spawn_station" pkg="gazebo_ros" type="spawn_model"
+        args="-param station_description
+           -urdf
+           -x 0
+           -y 0
+           -z 0.1
+           -model station"
+        respawn="false" output="screen"/>
+        
+</launch>
