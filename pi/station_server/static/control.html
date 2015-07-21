@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title>Control</title>
+    <script src="static/jquery-1.11.3.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        var rep = function(){
+          $("#station_cam").attr("src","/data/cam/station?" + new Date().getTime());
+        };
+        setInterval(rep, 500);
+      });
+    </script>
+    <style>
+      #cpad {
+        margin: 0 auto;
+        display: inline-block;
+      }
+      #watcher {
+        float: right;
+      }
+      #cam{
+        float: left;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>GOGOGO</h1>
+
+    <div id="cam">
+      <img id="station_cam"></img><br>
+    </div>
+	</body>
+</html>
