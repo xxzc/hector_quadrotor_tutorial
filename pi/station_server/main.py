@@ -7,7 +7,7 @@ from threading import Thread
 camdata = dict()
 
 def reader():
-	while true:
+	while True:
 		cmd = 'raspistill -t 100 -w 100 -h 100 -o img.jpg'
 		with open('img.jpg') as f:
 			camdata['station'] = f.read()
