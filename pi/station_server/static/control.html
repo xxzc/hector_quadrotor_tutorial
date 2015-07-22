@@ -4,10 +4,9 @@
     <script src="static/jquery-1.11.3.min.js"></script>
     <script>
       $(document).ready(function(){
-        var rep = function(){
-          $("#station_cam").attr("src","/data/cam/station?" + new Date().getTime());
-        };
-        setInterval(rep, 500);
+				  var refresh = function(){$("#station_cam").attr("src","/data/cam/station?" + new Date().getTime())};
+					$("#station_cam").load(function(){refresh();});
+					refresh();
       });
     </script>
     <style>
