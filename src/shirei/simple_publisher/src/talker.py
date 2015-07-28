@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import flask
-from flask import Flask, Response
+from flask import Flask, Response, request
 import requests
 from threading import Thread
 import time,sys 
@@ -12,7 +12,10 @@ from hector_uav_msgs.msg import Altimeter
 from sensor_msgs.msg import CompressedImage
 from std_srvs.srv import Empty
 from functools import partial
-
+from gevent import pywsgi
+import signal
+from wsgiref.simple_server import make_server
+import os
 
 class talkerNode:
     def __init__(self, topic):
@@ -67,7 +70,7 @@ class talkerNode:
         self.quiting = True
 
 app = Flask(__name__,static_url_path='/static')
-
+app.debug = True
 
 @app.route('/')
 def index():
@@ -85,6 +88,17 @@ def cam(cam):
 @app.route('/action/reset')
 def reset():
     node.update('reset', None)
+    return '0'
+ 
+@app.route('/action/moven', methods=['POST'])
+def moven():
+    p = {'x':0, 'y':0, 'z':0,
+         'a':0, 'b':0, 'c':0}
+    for m in p:
+        p[m] = float(request.form[m])
+    node.update('move', 
+        Twist(Vector3(p['x'],p['y'],p['z']),
+              Vector3(p['a'],p['b'],p['c'])))
     return '0'
     
 @app.route('/move/<m>')
@@ -116,21 +130,24 @@ def shutdown():
 def shutdown_server():
     requests.post('http://localhost:5000/shutdown')
    
-    
+
+def httpserver():
+    global wserver
+    rospy.loginfo('Server init.')
+    wserver = pywsgi.WSGIServer(('', 5000), app)
+    wserver.serve_forever()
+    #app.run(debug=True)
 
 if __name__ == '__main__':
-    try:
-        global node
-        node = talkerNode('cmd_vel')
-        server = Thread(target=app.run, 
-                        kwargs={'host': '0.0.0.0', 'port': 5000,'debug': False})
-        server.damon = True
-        server.start()
-        #app.run(host='0.0.0.0', port=5000, debug= True)
-        #worker = Thread(target=node.talk);worker.start()
-        node.talk()
-        rospy.loginfo('Server init.')
-        
-        #shutdown_server()
-    except KeyboardInterrupt:
-        print 'C-c'
+    global node
+    node = talkerNode('cmd_vel')
+    def stop_server(*args, **kwargs):
+        os.kill(os.getpid(), 9)
+    signal.signal(signal.SIGINT,  stop_server)
+    server = Thread(target=httpserver)
+    server.damon = True
+    server.start()
+    #app.run(host='0.0.0.0', port=5000, debug= True)
+    #worker = Thread(target=node.talk);worker.start()
+    #wserver.serve_forever()
+    node.talk()

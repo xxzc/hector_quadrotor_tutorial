@@ -1,2 +1,2 @@
 #!/bin/bash
-pkill -9 -f talker.py
+echo roslaunch rosmaster rosout gzserver gzclient | xargs -n 1 pkill -9 
