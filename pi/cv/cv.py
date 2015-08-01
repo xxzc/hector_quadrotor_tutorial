@@ -39,7 +39,7 @@ def hsv_inrange(hsv, c, th, slo, vlo):
 
 def get_block(hsv, color, threshold):
     mask = hsv_inrange(hsv, color, threshold, 50, 50)
-    contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy  = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     circles = map(cv2.minEnclosingCircle, contours)
     circle = max(circles, key=lambda b: b[1]) if circles else None
     return circle, mask
@@ -68,9 +68,10 @@ def paint_odometry(image, data, state, para, extra=False):
                        hsv2bgr((para[p][0], 255, 255)), 2)
     x, d = data['center'], data['heading']
     cv2.line(image, np2int(x), np2int(x + 2 * d), (255, 255, 0), 2)
+
     def ptext(t):
         cv2.putText(image, t, (0, ptext.y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0))
-        ptext.y +=20
+        ptext.y += 20
     ptext.y = 20
     ptext('A: %f' % state.c)
     ptext('Z: %f' % state.z)
@@ -88,18 +89,18 @@ if __name__ == '__main__':
     # cap = cv2.VideoCapture(0)
     frame = getimg()
     odo_para = {'marks': ['r', 'g', 'b'],
-                    'r': [0, 10],
-                    'g': [60, 10],
-                    'b': [120, 10],
-                    'img_h': frame.shape[0],
-                    'img_w': frame.shape[1],
-                    'height_coeff': 18.7,
-                    'x_coeff': 1,
-                    'y_coeff': 1,
-                    'c_pid': {'g': 0, 'p': 0.5, 'i': 0.0, 'd': 0.0, 'n': -1},
-                    'xy_pid': {'g': 0, 'p': 0.4, 'i': 0.0, 'd': 0.0, 'n': -1},
-                    'y_pid': {'g': 0, 'p': 0.4, 'i': 0.0, 'd': 0.0, 'n': -1},
-                    'z_pid': {'g': 0.5, 'p': 0.6, 'i': 0.0, 'd': 0.0, 'n': -1}
+                'r': [0, 10],
+                'g': [60, 10],
+                'b': [120, 10],
+                'img_h': frame.shape[0],
+                'img_w': frame.shape[1],
+                'height_coeff': 18.7,
+                'x_coeff': 1,
+                'y_coeff': 1,
+                'c_pid': {'g': 0, 'p': 0.5, 'i': 0.0, 'd': 0.0, 'n': -1},
+                'xy_pid': {'g': 0, 'p': 0.4, 'i': 0.0, 'd': 0.0, 'n': -1},
+                'y_pid': {'g': 0, 'p': 0.4, 'i': 0.0, 'd': 0.0, 'n': -1},
+                'z_pid': {'g': 0.5, 'p': 0.6, 'i': 0.0, 'd': 0.0, 'n': -1}
                 }
     control = Control(odo_para)
     while True:

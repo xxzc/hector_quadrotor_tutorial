@@ -16,6 +16,7 @@ from gevent import pywsgi
 import signal
 from wsgiref.simple_server import make_server
 import os
+import webbrowser
 
 class talkerNode:
     def __init__(self, topic):
@@ -34,8 +35,8 @@ class talkerNode:
             
         self.movepub = rospy.Publisher(topic, Twist, queue_size=10)
         
-        rospy.wait_for_service('/gazebo/reset_simulation')
-        self.resetsrv = rospy.ServiceProxy('/gazebo/reset_simulation', Empty)
+        rospy.wait_for_service('/gazebo/reset_world')
+        self.resetsrv = rospy.ServiceProxy('/gazebo/reset_world', Empty)
         
         rospy.init_node('talker', anonymous=True)
         self.rate = rospy.Rate(10) # 10hz
@@ -147,6 +148,7 @@ if __name__ == '__main__':
     server = Thread(target=httpserver)
     server.damon = True
     server.start()
+    webbrowser.open('http://127.0.0.1:5000')
     #app.run(host='0.0.0.0', port=5000, debug= True)
     #worker = Thread(target=node.talk);worker.start()
     #wserver.serve_forever()
