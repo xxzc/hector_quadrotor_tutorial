@@ -36,7 +36,7 @@ class talkerNode:
         self.camdata = {}
         for cam in self.camlist:
             self.camsub[cam] = rospy.Subscriber('/%s_cam/camera/image/compressed' % cam,
-                        CompressedImage, partial(self.camCallback, cam))
+                                                CompressedImage, partial(self.camCallback, cam))
             self.camdata[cam] = ''
 
         self.movepub = rospy.Publisher(topic, Twist, queue_size=10)
@@ -140,16 +140,7 @@ def move(m):
     node.update('move', movements[m])
     return "0"
 
-@app.route('/shutdown', methods=['POST'])
-def shutdown():
-    func = flask.request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        raise RuntimeError('Not running with the Werkzeug Server')
-    func()
-    return 'Server shutting down...'
 
-def shutdown_server():
-    requests.post('http://localhost:5000/shutdown')
 
 
 def httpserver():
