@@ -1,10 +1,66 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Hello World!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Control</title>
+    <script src="jquery-1.11.3.min.js"></script>
+    <script>
+      remote = 'http://127.0.0.1:5000'
+      $(document).ready(function(){
+        $(".move").click(function(){$.ajax({url: remote + "/move/" + this.id});});
+        $("#reset_button").click(function(){$.ajax({url: remote + "/action/reset"});});
+        var rep = function(){
+          $.ajax(remote + '/data/altimeter').done(function(n){$("#altimeter").text('Altimeter:'+n);});
+          $("#front_cam").attr("src",remote + "/data/cam/front?" + new Date().getTime());
+          $("#station_cam").attr("src",remote + "/data/cam/station?" + new Date().getTime());
+        };
+        setInterval(rep, 500);
+      });
+    </script>
+    <style>
+      #cpad {
+        margin: 0 auto;
+        display: inline-block;
+      }
+      #watcher {
+        float: right;
+      }
+      #cam{
+        float: left;
+      }
+    </style>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    We are using node.js <script>document.write(process.version)</script>.
-  </body>
+    <h1>GOGOGO</h1>
+    <table id="cpad">
+      <tr>
+        <td><button id="leftt" class="move">↶</button></td>
+        <td><button id="forward" class="move">↑</button></td>
+        <td><button id="rightt" class="move">↷</button></td>
+        <td><button id="up" class="move">⇧</button></td>
+      </tr>
+      <tr>
+        <td><button id="left" class="move">←</button></td>
+        <td><button id="stop" class="move">S</button></td>
+        <td><button id="right" class="move">→</button></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><button id="backward" class="move">↓</button></td>
+        <td></td>
+        <td><button id="down" class="move">⇩</button></td>
+      </tr>
+    </table>
+    <button id="reset_button" >Reset</button>
+    <div id="watcher">
+      <span id="altimeter">Altimeter:</span>
+    </div>
+    <div id="cam">
+      <img id="station_cam"></img><br>
+      <img id="front_cam"></img>
+    </div>
+
+
+	</body>
 </html>
