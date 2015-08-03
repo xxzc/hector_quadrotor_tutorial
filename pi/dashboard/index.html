@@ -9,9 +9,10 @@
   <script src="jquery-1.11.3.min.js"></script>
   <script src="bootstrap.min.js"></script>
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mr4iza0NxXq4OlTYVHBceHkv"></script>
+  <script src="geo.js"></script>
+  <script src="remote.js"></script>
 	<script src="init.js"></script>
 	<script>
-		remote = 'http://127.0.0.1:5000'
 		$(document).ready(on_load);
 	</script>
 </head>
@@ -21,7 +22,7 @@
 	  <div class="container-fluid">
 	    <a class="navbar-brand" href="#">Drone Dash</a>
 	    <ul class="nav navbar-nav navbar-right">
-	            <li><a href="#" data-toggle="modal" data-target="#myModal">Settings</a></li>
+	            <li><a href="#" data-toggle="modal" data-target="#settings">Settings</a></li>
 	          </ul>
 	  </div>
 	  </nav>
@@ -80,6 +81,7 @@
 					<div class="list-group">
 			      <div id="altimeter" class="list-group-item">Altimeter:</div>
 						<div id="sonar" class="list-group-item">Sonar:</div>
+            <div id="gps" class="list-group-item">GPS:</div>
 			    </div>
 				</div>
 	    </div>

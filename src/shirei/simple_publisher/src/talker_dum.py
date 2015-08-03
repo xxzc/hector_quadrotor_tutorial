@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import flask
 from flask import Flask, Response, request
-import time,sys
+import time,sys,math
 from gevent import pywsgi
 from wsgiref.simple_server import make_server
 import os
@@ -30,6 +30,12 @@ def altimeter():
 @app.route('/data/position')
 def position():
     return '0,0,0,0,0,0'
+
+@app.route('/data/gps')
+def gps():
+    x = 113.659261 + math.cos(time.time())*0.001
+    y = 34.799606 + math.sin(time.time())*0.001
+    return '[%f, %f]' % (x, y)
 
 @app.route('/data/cam/<cam>')
 def cam(cam):
