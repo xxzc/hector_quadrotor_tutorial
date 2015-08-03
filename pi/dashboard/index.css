@@ -1,0 +1,25 @@
+#cpad {
+  margin: 0 auto;
+  display: inline-block;
+}
+#watcher {
+  float: right;
+}
+#cam{
+  float: left;
+}
+#allmap {
+  height: 0;
+  padding-bottom: 100%;
+  overflow: hidden;
+  margin:0;
+  font-family:"微软雅黑";}
+
+.cam{
+  width: 100%;
+  height: 100%;
+}
+
+.nospace{
+  padding: 0 !important;
+}

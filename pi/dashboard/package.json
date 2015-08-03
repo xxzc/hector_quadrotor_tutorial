@@ -1,5 +1,11 @@
 {
   "name": "nw-demo",
   "version": "0.0.1",
-  "main": "index.html"
+  "main": "index.html",
+  "window": {
+    "title": "Dansboard",
+    "toolbar": true,
+    "width": 800,
+    "height": 500
+  }
 }
