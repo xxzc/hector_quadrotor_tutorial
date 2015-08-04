@@ -22,8 +22,8 @@
 	  <div class="container-fluid">
 	    <a class="navbar-brand" href="#">Drone Dash</a>
 	    <ul class="nav navbar-nav navbar-right">
-	            <li><a href="#" data-toggle="modal" data-target="#settings">Settings</a></li>
-	          </ul>
+	      <li><a href="#" data-toggle="modal" data-target="#settings">Settings</a></li>
+	    </ul>
 	  </div>
 	  </nav>
 
@@ -31,12 +31,12 @@
 	  <div class="row">
 	    <div class="col-sm-3">
 	      <div class="panel panel-default">
-	        <div class="panel-heading">Camera1</div>
-	        <div class="panel-body nospace"><img id="station_cam" class="cam"></img></div>
+	        <div class="panel-heading">Station Camera</div>
+	        <div class="panel-body nospace"><img id="station_cam" class="cam" src="static/placehold.jpg"></img></div>
 	      </div>
 	      <div class="panel panel-default">
-	        <div class="panel-heading">Camera2</div>
-	        <div class="panel-body nospace"><img id="front_cam" class="cam"></img></div>
+	        <div class="panel-heading">Front Camera</div>
+	        <div class="panel-body nospace"><img id="front_cam" class="cam" src="static/placehold.jpg"></img></div>
 	      </div>
 	    </div>
 	    <div class="col-sm-6">
@@ -50,6 +50,9 @@
 					<div class="panel-body">
 						<button type="button" class="btn btn-primary" id="connect">Connect</button>
 					</div>
+          <div class="list-group">
+			      <div id="status" class="list-group-item">N/A</div>
+			    </div>
 				</div>
 	      <div class="panel panel-default">
 	        <div class="panel-heading">Control</div>

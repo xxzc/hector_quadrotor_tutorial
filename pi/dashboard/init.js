@@ -33,7 +33,7 @@ function stat_start(){
       $("#gps").text('GPS: '+s);
       var p = map.transToPoint(s);
       map.gotoPos(p);
-      map.moveMark('drone', p);
+      map.moveMark(p, 'drone', 'drone');
     });
     $("#front_cam").attr("src",remote.getCamURL("front"));
     $("#station_cam").attr("src",remote.getCamURL("station"));
