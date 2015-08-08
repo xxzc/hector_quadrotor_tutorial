@@ -1,0 +1,50 @@
+
+# Thread: Thread-6(140416953050880)
+File: "/usr/lib/python2.7/threading.py", line 783, in __bootstrap
+  self.__bootstrap_inner()
+File: "/usr/lib/python2.7/threading.py", line 810, in __bootstrap_inner
+  self.run()
+File: "/usr/lib/python2.7/threading.py", line 763, in run
+  self.__target(*self.__args, **self.__kwargs)
+File: "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_pubsub.py", line 426, in _run
+  self._cond_data_available.wait()
+File: "/usr/lib/python2.7/threading.py", line 339, in wait
+  waiter.acquire()
+
+# Thread: Thread-4(140416961443584)
+File: "/usr/lib/python2.7/threading.py", line 783, in __bootstrap
+  self.__bootstrap_inner()
+File: "/usr/lib/python2.7/threading.py", line 810, in __bootstrap_inner
+  self.run()
+File: "/usr/lib/python2.7/threading.py", line 763, in run
+  self.__target(*self.__args, **self.__kwargs)
+File: "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/tcpros_base.py", line 153, in run
+  (client_sock, client_addr) = self.server_sock.accept()
+File: "/usr/lib/python2.7/socket.py", line 202, in accept
+  sock, addr = self._sock.accept()
+
+# Thread: MainThread(140417055721280)
+File: "/home/zhangcheng/dev/hector_quadrotor_tutorial/src/shirei/simple_publisher/src/client.py", line 66, in <module>
+  node.talk()
+File: "/home/zhangcheng/dev/hector_quadrotor_tutorial/src/shirei/simple_publisher/src/client.py", line 57, in talk
+  rate.sleep()
+File: "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/timer.py", line 99, in sleep
+  sleep(self._remaining(curr_time))
+File: "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/timer.py", line 125, in sleep
+  rospy.rostime.wallsleep(duration)
+File: "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/rostime.py", line 296, in wallsleep
+  time.sleep(duration)
+File: "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/core.py", line 437, in _ros_signal
+  prev_handler(sig, stackframe)
+File: "/home/zhangcheng/dev/hector_quadrotor_tutorial/src/shirei/simple_publisher/src/client.py", line 18, in debug
+  for filename, lineno, name, line in traceback.extract_stack(stack):
+
+# Thread: Dummy-2(140416983332608)
+File: "/opt/ros/indigo/lib/python2.7/dist-packages/rosgraph/xmlrpc.py", line 219, in run
+  raise
+File: "/opt/ros/indigo/lib/python2.7/dist-packages/rosgraph/xmlrpc.py", line 293, in _run
+  logging.getLogger('xmlrpc').error("serve forever IOError: %s, %s"%(e.errno, e.strerror))
+File: "/usr/lib/python2.7/SocketServer.py", line 241, in serve_forever
+  self.__is_shut_down.set()
+File: "/usr/lib/python2.7/SocketServer.py", line 155, in _eintr_retry
+  return func(*args)

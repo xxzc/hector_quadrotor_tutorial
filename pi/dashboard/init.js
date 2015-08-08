@@ -2,6 +2,7 @@ timer = null;
 
 function on_load(){
   $(".move").click(function(){remote.doMove(this.id)});
+  $(".drone-status").click(function(){remote.doGoStatus(this.id)});
   $("#reset_button").click(remote.doReset);
   $("#remote").val(remote.url);
   $("#settings_save").click(function(){
@@ -26,15 +27,24 @@ function on_load(){
 
 function stat_start(){
   var rep = function(){
-    remote.getAltimeter(
-      function(n){$("#altimeter").text('Altimeter: '+n);}
-    );
-    remote.getGPS(function(s){
-      $("#gps").text('GPS: '+s);
-      var p = map.transToPoint(s);
-      map.gotoPos(p);
-      map.moveMark(p, 'drone', 'drone');
-    });
+    remote.getAll(
+      function(stat){
+        $("#altimeter").text('Altimeter: '+stat.altimeter);
+        $("#gps").text('GPS: '+stat.gps);
+        var p = map.transToPoint(stat.gps);
+        map.gotoPos(p);
+        map.moveMark(p, 'drone', 'drone');
+        ui.setDroneStatus(stat.status);
+      });
+    // remote.getAltimeter(
+    //   function(n){$("#altimeter").text('Altimeter: '+n);}
+    // );
+    // remote.getGPS(function(s){
+    //   $("#gps").text('GPS: '+s);
+    //   var p = map.transToPoint(s);
+    //   map.gotoPos(p);
+    //   map.moveMark(p, 'drone', 'drone');
+    // });
     $("#front_cam").attr("src",remote.getCamURL("front"));
     $("#station_cam").attr("src",remote.getCamURL("station"));
   };
@@ -43,4 +53,8 @@ function stat_start(){
 
 function stat_pause(){
   clearInterval(timer);
+  ui.resetDroneStatus();
+  map.deleteMark("drone");
+  $("#front_cam").attr("src", "static/placehold.jpg");
+  $("#station_cam").attr("src", "static/placehold.jpg");
 }

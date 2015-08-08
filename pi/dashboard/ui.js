@@ -1,3 +1,21 @@
+var ui = {
+  setDroneStatus: function(sname){
+    ui.resetDroneStatus();
+    ui.setButton(sname, "btn-primary");
+  },
+  resetDroneStatus: function(){
+    ui.setButton("ready", "btn-default");
+    ui.setButton("landing", "btn-default");
+    ui.setButton("nav", "btn-default");
+  },
+  setButton: function(id, cls){
+    $('#'+id).removeClass('btn-default');
+    $('#'+id).removeClass('btn-primary');
+    $('#'+id).addClass(cls);
+    // document.getElementById(id).className = "btn " + cls;
+  }
+}
+
 var map = {
   map: null,
   marks: {},
@@ -21,8 +39,11 @@ var map = {
     this.map.addOverlay(this.marks[name]);
   },
 
-  transToPoint: function(str){
-    var pos = JSON.parse(str);
+  deleteMark: function(name){
+    this.map.removeOverlay(this.marks[name]);
+  },
+
+  transToPoint: function(pos){
     return new BMap.Point(pos[0], pos[1]);
   }
 };
