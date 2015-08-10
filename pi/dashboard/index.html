@@ -44,11 +44,24 @@
 	        <div class="panel-heading">Map</div>
 	        <div class="panel-body nospace"><div id="allmap" class="innospace"></div></div>
           <div class="list-group">
-			      <div id="status" class="list-group-item">
+            <div id="status" class="list-group-item">
               <div class="btn-group">
                 <button type="button" class="btn btn-default drone-status" id="ready">Ready</button>
                 <button type="button" class="btn btn-default drone-status" id="landing">Landing</button>
                 <button type="button" class="btn btn-default drone-status" id="nav">Nav</button>
+              </div>
+            </div>
+            <div id="status" class="list-group-item">
+              <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary tool" id="thand">
+                  <input type="radio" name="options" checked> Hand
+                </label>
+                <label class="btn btn-primary tool" id="tgoal">
+                  <input type="radio" name="options"> Goal
+                </label>
+                <label class="btn btn-primary tool">
+                  <input type="radio" name="options" id="tstation"> Station
+                </label>
               </div>
             </div>
 			    </div>
@@ -94,6 +107,7 @@
 			      <div id="altimeter" class="list-group-item">Altimeter:</div>
 						<div id="sonar" class="list-group-item">Sonar:</div>
             <div id="gps" class="list-group-item">GPS:</div>
+            <div id="pose" class="list-group-item">Pose:</div>
 			    </div>
 				</div>
 	    </div>

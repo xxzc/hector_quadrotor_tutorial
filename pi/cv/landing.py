@@ -5,12 +5,14 @@ import urllib
 from control import *
 from geo import *
 
+def string_to_image(str):
+    image = np.asarray(bytearray(str), dtype="uint8")
+    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+    return image
 
 def url_to_image(url):
     resp = urllib.urlopen(url)
-    image = np.asarray(bytearray(resp.read()), dtype="uint8")
-    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
-    return image
+    return string_to_image(resp.read())
 
 
 def create_image(h, w):

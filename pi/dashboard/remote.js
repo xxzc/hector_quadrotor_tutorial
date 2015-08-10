@@ -21,6 +21,9 @@ var remote = {
   doGoStatus: function(status){
     $.post(this.url + '/action/set_status', {status: status});
   },
+  doGoGoal: function(x, y){
+    $.post(this.url + '/action/set_goal', {gx: x, gy: y});
+  },
   doReset: function(){
     $.ajax({'url': this.url + "/action/reset"});
   }

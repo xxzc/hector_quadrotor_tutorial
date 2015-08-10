@@ -2,6 +2,7 @@ timer = null;
 
 function on_load(){
   $(".move").click(function(){remote.doMove(this.id)});
+  $(".tool").click(function(){ui.tool = this.id});
   $(".drone-status").click(function(){remote.doGoStatus(this.id)});
   $("#reset_button").click(remote.doReset);
   $("#remote").val(remote.url);
@@ -22,6 +23,8 @@ function on_load(){
   });
   //
   map.init("allmap");
+  map.moveMark(map.transToPoint([map.homex, map.homey]), 'station', 'station');
+
 }
 
 
@@ -31,6 +34,7 @@ function stat_start(){
       function(stat){
         $("#altimeter").text('Altimeter: '+stat.altimeter);
         $("#gps").text('GPS: '+stat.gps);
+        $("#pose").text('Pose: '+stat.pose);
         var p = map.transToPoint(stat.gps);
         map.gotoPos(p);
         map.moveMark(p, 'drone', 'drone');
@@ -55,6 +59,7 @@ function stat_pause(){
   clearInterval(timer);
   ui.resetDroneStatus();
   map.deleteMark("drone");
+  map.deleteMark("goal");
   $("#front_cam").attr("src", "static/placehold.jpg");
   $("#station_cam").attr("src", "static/placehold.jpg");
 }
