@@ -1,5 +1,11 @@
 var ui = {
   tool: "thand",
+  setProgressBar: function(id, p){
+    o = $("#"+id);
+    percent = String(p*100) + "%";
+    o.html(percent);
+    o.css("width", percent);
+  },
   setDroneStatus: function(sname){
     ui.resetDroneStatus();
     ui.setButton(sname, "btn-primary");

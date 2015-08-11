@@ -33,6 +33,7 @@ function stat_start(){
     remote.getAll(
       function(stat){
         $("#altimeter").text('Altimeter: '+stat.altimeter);
+        ui.setProgressBar("pbar", Number(stat.battery));
         $("#gps").text('GPS: '+stat.gps);
         $("#pose").text('Pose: '+stat.pose);
         var p = map.transToPoint(stat.gps);

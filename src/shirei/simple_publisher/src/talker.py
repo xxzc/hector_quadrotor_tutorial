@@ -35,6 +35,9 @@ class talkerNode:
         self.nav_para = {}
         self.goal = [0, 0]
 
+        self.ptime = 0.0
+        self.battery = 1.0
+
         self.altimeter = 0
         self.metersub = rospy.Subscriber('/altimeter', Altimeter, self.altimeterCallback)
 
@@ -77,7 +80,10 @@ class talkerNode:
         self.altimeter = data.altitude
 
     def talk(self):
+        self.ptime = time.time()
         while not rospy.is_shutdown() and not self.quiting:
+            self.battery -= 0.00005*(time.time() - self.ptime)
+            self.battery = 0 if self.battery < 0 else self.battery
             try:
                 name, msg = self.queue.get(True, 0.1)
                 if self.status == 'ready':
@@ -116,6 +122,7 @@ class talkerNode:
                     self.movepub.publish(move)
                 else:
                     self.stop()
+                    self.battery = 1.0
                     self.controller = None
                     self.status = 'ready'
             elif self.status == 'nav':
@@ -178,6 +185,7 @@ def alldata():
         'altimeter': '12.3',
         'gps': pos2gps([node.pos[0], node.pos[1]]),
         'pose': node.pos[3],
+        'battery': node.battery,
     }
     return json.dumps(data)
 

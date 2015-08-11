@@ -16,6 +16,9 @@ class LandingNodeController:
         odo_data, state = odometry(frame, self.para)
         if odo_data:
             move = self.control.update(state)
+            d = abs(move[0])+abs(move[1])+abs(move[2])+abs(move[3])
+            if d < 0.05:
+                return None
             return move
         else:
             return None
@@ -33,7 +36,7 @@ class NavNodeController:
         r = pi - r
         tth = pi/2 - atan2(gx-x, gy-y)
         d = abs(gx-x) + abs(gy-y)
-        if d < 0.1:
+        if d < 0.05 or z < 1:
             return None
         n = -1/(d+1) + 1
         return (n*cos(tth-r), n*sin(tth-r), 0, 0, 0, 0)
