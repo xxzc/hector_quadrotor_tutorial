@@ -25,7 +25,7 @@ import json
 from node_controller import *
 
 class talkerNode:
-    def __init__(self, landing_para):
+    def __init__(self, station_para, landing_para):
         self.queue = Queue.Queue()
 
         self.allstatus = ['ready', 'nav', 'landing']
@@ -242,6 +242,18 @@ def httpserver():
     wserver.serve_forever()
     #app.run(debug=True)
 
+
+station_para = {
+    'main':{
+        'pos': (0, 0),
+        'inventory': [],
+    },
+    'blue':{
+        'pos': (2, 2),
+        'inventory': ['banana'],
+    },
+}
+
 landing_para = {'marks': ['r', 'g', 'b'],
             'r': [0, 10],
             'g': [60, 10],
@@ -258,7 +270,7 @@ landing_para = {'marks': ['r', 'g', 'b'],
             }
 if __name__ == '__main__':
     global node
-    node = talkerNode(landing_para)
+    node = talkerNode(station_para, landing_para)
     def stop_server(*args, **kwargs):
         os.kill(os.getpid(), 9)
     signal.signal(signal.SIGINT,  stop_server)
