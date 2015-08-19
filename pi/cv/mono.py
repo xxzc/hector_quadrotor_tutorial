@@ -3,8 +3,10 @@ import numpy as np
 import cv2
 import urllib
 from control import *
+import time
 from geo import *
-
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 
 def url_to_image(url):
     resp = urllib.urlopen(url)
@@ -76,16 +78,26 @@ def paint_odometry(image, data, para, extra=True):
                 cv2.line(image, data[p + '_c'], data[p + '_cc'], (255, 255, 0), 2)
     return image
 
-
+camera = PiCamera()
+camera.resolution = (320, 240)
+raw = PiRGBArray(camera)
 def getimg():
-    return cap.read()[1]
-    # return cv2.imread('station.jpg')
+    for frame in camera.capture_continuous(raw, format="bgr", use_video_port=True):
+        img = raw.array
+        raw.truncate(0)
+        return img
+    #camera.capture(raw, format='bgr')
+    #img = raw.array
+    #raw.truncate(0)   
+    #return img
+    #return cap.read()[1]
+    #return cv2.imread('station.jpg')
     #return url_to_image('http://127.0.0.1:5000/data/cam/station')
 
 
 if __name__ == '__main__':
-    global cap
-    cap = cv2.VideoCapture(0)
+    #cap = cv2.VideoCapture(0)
+    time.sleep(0.1)
     frame = getimg()
     odo_para = {'marks': ['r'],
                     'r': [170, 10],
