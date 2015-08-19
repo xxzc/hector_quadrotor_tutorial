@@ -78,27 +78,12 @@ def paint_odometry(image, data, para, extra=True):
                 cv2.line(image, data[p + '_c'], data[p + '_cc'], (255, 255, 0), 2)
     return image
 
-camera = PiCamera()
-camera.resolution = (320, 240)
-raw = PiRGBArray(camera)
-def getimg():
-    for frame in camera.capture_continuous(raw, format="bgr", use_video_port=True):
-        img = raw.array
-        raw.truncate(0)
-        return img
-    #camera.capture(raw, format='bgr')
-    #img = raw.array
-    #raw.truncate(0)   
-    #return img
-    #return cap.read()[1]
-    #return cv2.imread('station.jpg')
-    #return url_to_image('http://127.0.0.1:5000/data/cam/station')
 
 
 if __name__ == '__main__':
     #cap = cv2.VideoCapture(0)
-    time.sleep(0.1)
-    frame = getimg()
+    cam = initcam()
+    frame = getimg(cam)
     odo_para = {'marks': ['r'],
                     'r': [170, 10],
                     #'g': [60, 10],
@@ -115,7 +100,7 @@ if __name__ == '__main__':
                 }
     while True:
         # Capture frame-by-frame
-        frame = getimg()
+        frame = getimg(cam)
 
         # para = [[0,5],
         #                       [50, 9],

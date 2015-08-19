@@ -4,6 +4,41 @@ import urllib
 from geo import angle
 import numpy as np
 import math
+from picamera.array import PiRGBArray
+from picamera import PiCamera
+import cv2
+
+def url_to_image(url):
+    def string_to_image(str):
+        image = np.asarray(bytearray(str), dtype="uint8")
+        image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+        return image
+    resp = urllib.urlopen(url)
+    return string_to_image(resp.read())
+
+
+def create_image(h, w):
+    return np.zeros((h, w, 3), np.uint8)
+
+
+def hsv2bgr(hsv):
+    return cv2.cvtColor(np.uint8([[hsv]]), cv2.COLOR_HSV2BGR)[0, 0].tolist()
+
+
+def hsv_inrange(hsv, c, th, slo, vlo):
+    lo = (c - th) % 180
+    hi = (c + th) % 180
+    if lo <= hi:
+        low = np.array([lo, slo, vlo])
+        high = np.array([hi, 255, 255])
+        return cv2.inRange(hsv, low, high)
+    else:
+        p1 = cv2.inRange(hsv, np.array([lo, slo, vlo]),
+                         np.array([179, 255, 255]))
+        p2 = cv2.inRange(hsv, np.array([0, slo, vlo]),
+                         np.array([hi, 255, 255]))
+
+        return p1 + p2
 
 def move_req(x, y, z, a, b, c):
     print x, y, z, a, b, c
@@ -12,6 +47,25 @@ def move_req(x, y, z, a, b, c):
                              'a': a, 'b': b, 'c': c})
     return urllib.urlopen(url, para).read()
 
+def initcam():
+    camera = PiCamera()
+    camera.resolution = (320, 240)
+    raw = PiRGBArray(camera)
+    return camera, raw
+
+def getimg(cam):
+    camera, raw = cam
+    for frame in camera.capture_continuous(raw, format="bgr", use_video_port=True):
+        img = raw.array
+        raw.truncate(0)
+        return img
+    #camera.capture(raw, format='bgr')
+    #img = raw.array
+    #raw.truncate(0)   
+    #return img
+    #return cap.read()[1]
+    #return cv2.imread('station.jpg')
+    #return url_to_image('http://127.0.0.1:5000/data/cam/station')
 
 class Pid:
     def __init__(self, g, p, i, d, n):

@@ -5,38 +5,7 @@ import urllib
 from control import *
 from geo import *
 
-def string_to_image(str):
-    image = np.asarray(bytearray(str), dtype="uint8")
-    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
-    return image
 
-def url_to_image(url):
-    resp = urllib.urlopen(url)
-    return string_to_image(resp.read())
-
-
-def create_image(h, w):
-    return np.zeros((h, w, 3), np.uint8)
-
-
-def hsv2bgr(hsv):
-    return cv2.cvtColor(np.uint8([[hsv]]), cv2.COLOR_HSV2BGR)[0, 0].tolist()
-
-
-def hsv_inrange(hsv, c, th, slo, vlo):
-    lo = (c - th) % 180
-    hi = (c + th) % 180
-    if lo <= hi:
-        low = np.array([lo, slo, vlo])
-        high = np.array([hi, 255, 255])
-        return cv2.inRange(hsv, low, high)
-    else:
-        p1 = cv2.inRange(hsv, np.array([lo, slo, vlo]),
-                         np.array([179, 255, 255]))
-        p2 = cv2.inRange(hsv, np.array([0, slo, vlo]),
-                         np.array([hi, 255, 255]))
-
-        return p1 + p2
 
 
 def get_block(hsv, color, threshold):
@@ -82,14 +51,12 @@ def paint_odometry(image, data, state, para, extra=False):
     return image
 
 
-def getimg():
-    # return cv2.imread('station.jpg')
-    return url_to_image('http://127.0.0.1:5000/data/cam/station')
 
 
 if __name__ == '__main__':
     # cap = cv2.VideoCapture(0)
-    frame = getimg()
+    cam = caminit()
+    frame = getimg(cam)
     odo_para = {'marks': ['r', 'g', 'b'],
                 'r': [0, 10],
                 'g': [60, 10],
@@ -107,7 +74,7 @@ if __name__ == '__main__':
     control = Control(odo_para)
     while True:
         # Capture frame-by-frame
-        frame = getimg()
+        frame = getimg(cam)
 
         # para = [[0,5],
         #                       [50, 9],
