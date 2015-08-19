@@ -6,14 +6,23 @@
    <arg name="world" value="$(find simple_launch)/worlds/simple.world"/>
   </include>
   <arg name="station_model" default="$(find simple_launch)/urdf/station.gazebo.xacro"/>
-  <param name="station_description" command="$(find xacro)/xacro.py '$(arg station_model)' " />
+  <param name="main_station_description" command="$(find xacro)/xacro.py '$(arg station_model)' sname:=main" />
+  <param name="blue_station_description" command="$(find xacro)/xacro.py '$(arg station_model)' sname:=blue" />
   <node name="spawn_station" pkg="gazebo_ros" type="spawn_model"
-        args="-param station_description
+        args="-param main_station_description
            -urdf
            -x 0
            -y 0
            -z 0.1
-           -model station"
+           -model main"
         respawn="false" output="screen"/>
+<node name="spawn_station" pkg="gazebo_ros" type="spawn_model"
+      args="-param blue_station_description
+         -urdf
+         -x 2
+         -y 2
+         -z 0.1
+         -model blue"
+      respawn="false" output="screen"/>
 
 </launch>
