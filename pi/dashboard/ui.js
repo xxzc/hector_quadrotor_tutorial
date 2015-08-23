@@ -27,7 +27,7 @@ var map = {
   map: null,
   marks: {},
   icons: {},
-  homex: 113.659261, homey: 34.799606,
+  homex: 113.67108, homey: 34.792907,
 
   init: function(id){
     this.map = new BMap.Map(id);

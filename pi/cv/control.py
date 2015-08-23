@@ -3,16 +3,15 @@ from time import clock
 import urllib
 from geo import angle
 import numpy as np
-import math
-from picamera.array import PiRGBArray
-from picamera import PiCamera
+import math, os
 import cv2
 
+def string_to_image(str):
+    image = np.asarray(bytearray(str), dtype="uint8")
+    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+    return image
+
 def url_to_image(url):
-    def string_to_image(str):
-        image = np.asarray(bytearray(str), dtype="uint8")
-        image = cv2.imdecode(image, cv2.IMREAD_COLOR)
-        return image
     resp = urllib.urlopen(url)
     return string_to_image(resp.read())
 
@@ -45,27 +44,34 @@ def move_req(x, y, z, a, b, c):
     url = 'http://127.0.0.1:5000/action/moven'
     para = urllib.urlencode({'x': x, 'y': y, 'z': z,
                              'a': a, 'b': b, 'c': c})
-    return urllib.urlopen(url, para).read()
+    try:
+        return urllib.urlopen(url, para).read()
+    except:
+        return ''
+        
 
-def initcam():
-    camera = PiCamera()
-    camera.resolution = (320, 240)
-    raw = PiRGBArray(camera)
-    return camera, raw
+def initcam(pi_cam=False):
+    if pi_cam:
+        from picamera.array import PiRGBArray
+        from picamera import PiCamera
+        camera = PiCamera()
+        camera.resolution = (320, 240)
+        raw = PiRGBArray(camera)
+        return camera, raw
+    return cv2.VideoCapture(0)
 
 def getimg(cam):
-    camera, raw = cam
-    for frame in camera.capture_continuous(raw, format="bgr", use_video_port=True):
-        img = raw.array
-        raw.truncate(0)
-        return img
-    #camera.capture(raw, format='bgr')
-    #img = raw.array
-    #raw.truncate(0)   
-    #return img
-    #return cap.read()[1]
-    #return cv2.imread('station.jpg')
-    #return url_to_image('http://127.0.0.1:5000/data/cam/station')
+    return url_to_image('http://127.0.0.1:5000/data/cam/station')
+    # return cv2.imread(os.path.dirname(__file__) + '/station.jpg')
+    if type(cam) == tuple: # pi
+        camera, raw = cam
+        for frame in camera.capture_continuous(raw, format="bgr", use_video_port=True):
+            img = raw.array
+            raw.truncate(0)
+            return img
+    return cam.read()[1]
+
+
 
 class Pid:
     def __init__(self, g, p, i, d, n):

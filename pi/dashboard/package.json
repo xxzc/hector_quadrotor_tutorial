@@ -4,7 +4,7 @@
   "main": "index.html",
   "window": {
     "title": "Dansboard",
-    "toolbar": true,
+    "toolbar": false,
     "width": 800,
     "height": 500
   }

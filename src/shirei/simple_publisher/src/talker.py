@@ -26,6 +26,9 @@ from node_controller import *
 
 class talkerNode:
     def __init__(self, station_para, landing_para):
+        self.homex =  113.67108
+        self.homey = 34.792907
+        
         self.queue = Queue.Queue()
 
         self.allstatus = ['ready', 'nav', 'landing']
@@ -145,10 +148,10 @@ class talkerNode:
         self.quiting = True
 
 def gps2pos(gps):
-    return [1000*(gps[0]-113.659261), 1000*(gps[1]-34.799606)]
+    return [1000*(gps[0]-node.homex), 1000*(gps[1]-node.homey)]
 
 def pos2gps(pos):
-    return [113.659261 + pos[0]*0.001, 34.799606 + pos[1]*0.001]
+    return [node.homex + pos[0]*0.001, node.homey + pos[1]*0.001]
 
 app = Flask(__name__,static_url_path='/static')
 app.debug = True
@@ -178,8 +181,8 @@ def set_goal():
 
 @app.route('/data/all')
 def alldata():
-    x = 113.659261 + node.pos[0]*0.001
-    y = 34.799606 + node.pos[1]*0.001
+    x = node.homex + node.pos[0]*0.001
+    y = node.homey+ node.pos[1]*0.001
     data = {
         'status': node.status,
         'altimeter': '12.3',

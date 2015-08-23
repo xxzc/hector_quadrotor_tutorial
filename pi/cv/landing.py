@@ -32,7 +32,7 @@ def odometry(image, para):
     return res, State(res, para)
 
 
-def paint_odometry(image, data, state, para, extra=False):
+def paint_odometry(image, data, state, para, extra=True):
     if extra:
         for p in para['marks']:
             cv2.circle(image, np2int(data[p + '_c']), int(data[p + '_r']),
@@ -55,7 +55,7 @@ def paint_odometry(image, data, state, para, extra=False):
 
 if __name__ == '__main__':
     # cap = cv2.VideoCapture(0)
-    cam = caminit()
+    cam = initcam()
     frame = getimg(cam)
     odo_para = {'marks': ['r', 'g', 'b'],
                 'r': [0, 10],
